@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(unitree_legged_real)
-
-add_compile_options(-std=c++11)
+project(unitree_legged_real CXX)
+set(CMAKE_CXX_STANDARD 11)
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     geometry_msgs
     unitree_legged_msgs
 )
+
+find_package(lcm REQUIRED)
 
 catkin_package()
 
@@ -19,27 +20,39 @@ include_directories(
 
 set(CMAKE_CXX_FLAGS "-O3")
 
-include_directories(/home/bian/Robot_SDK/unitree_legged_sdk/include)
-link_directories(/home/bian/Robot_SDK/unitree_legged_sdk/lib)
-string(CONCAT LEGGED_SDK_NAME libunitree_legged_sdk.so)
-set(EXTRA_LIBS ${LEGGED_SDK_NAME} lcm)
 
-add_executable(lcm_server /home/bian/Robot_SDK/unitree_legged_sdk/examples/lcm_server.cpp)
-target_link_libraries(lcm_server ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(lcm_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+macro(add_legged_sdk_dependencies EXECUTABLE)
+    target_link_libraries(
+        ${EXECUTABLE}
+        ${UNITREE_LEGGED_SDK_DIR}/lib/libunitree_legged_sdk_amd64.so 
+        ${catkin_LIBRARIES}
+        lcm::lcm
+    )
+    add_dependencies(
+        ${EXECUTABLE}
+         ${${PROJECT_NAME}_EXPORTED_TARGETS} 
+         ${catkin_EXPORTED_TARGETS}
+    )
+    target_include_directories(
+        ${EXECUTABLE}
+        PUBLIC 
+        ${UNITREE_LEGGED_SDK_DIR}/include
+        ${LCM_INCLUDE_DIR}/include
+    )
+endmacro()
+
+
+add_executable(lcm_server src/exe/lcm_server.cpp)
+add_legged_sdk_dependencies(lcm_server)
 
 add_executable(position_lcm src/exe/position_mode.cpp)
-target_link_libraries(position_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(position_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_legged_sdk_dependencies(position_lcm)
 
 add_executable(velocity_lcm src/exe/velocity_mode.cpp)
-target_link_libraries(velocity_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(velocity_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_legged_sdk_dependencies(velocity_lcm)
 
 add_executable(torque_lcm src/exe/torque_mode.cpp)
-target_link_libraries(torque_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(torque_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_legged_sdk_dependencies(torque_lcm)
 
 add_executable(walk_lcm src/exe/walk_mode.cpp)
-target_link_libraries(walk_lcm ${EXTRA_LIBS} ${catkin_LIBRARIES})
-add_dependencies(walk_lcm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_legged_sdk_dependencies(walk_lcm)

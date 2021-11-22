@@ -23,7 +23,7 @@ Just search the "/home/bian/Robot_SDK/unitree_legged_sdk" and change it to your 
 You can use catkin_make to build ROS packages. First copy the package folder to `~/catkin_ws/src`, then:
 ```
 cd ~/catkin_ws
-catkin_make
+catkin_make -DUNITREE_LEGGED_SDK_DIR=foo_dir
 ```
 
 # Setup the net connection

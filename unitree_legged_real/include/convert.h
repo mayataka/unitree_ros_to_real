@@ -12,8 +12,8 @@ Use of this source code is governed by the MPL-2.0 license, see LICENSE.
 #include <unitree_legged_msgs/HighState.h>
 #include <unitree_legged_msgs/MotorCmd.h>
 #include <unitree_legged_msgs/MotorState.h>
-#include <unitree_legged_msgs/BmsCmd.h>
-#include <unitree_legged_msgs/BmsState.h>
+// #include <unitree_legged_msgs/BmsCmd.h>
+// #include <unitree_legged_msgs/BmsState.h>
 #include <unitree_legged_msgs/IMU.h>
 #include "unitree_legged_sdk/unitree_legged_sdk.h"
 
@@ -25,32 +25,32 @@ unitree_legged_msgs::Cartesian ToRos(UNITREE_LEGGED_SDK::Cartesian& lcm){
     return ros;
 }
 
-UNITREE_LEGGED_SDK::BmsCmd ToLcm(unitree_legged_msgs::BmsCmd& ros){
-    UNITREE_LEGGED_SDK::BmsCmd lcm;
-    lcm.off = ros.off;
-    for(int i(0); i<3; ++i){
-        lcm.reserve[i] = ros.reserve[i];
-    }
-    return lcm;
-}
+// UNITREE_LEGGED_SDK::BmsCmd ToLcm(unitree_legged_msgs::BmsCmd& ros){
+//     UNITREE_LEGGED_SDK::BmsCmd lcm;
+//     lcm.off = ros.off;
+//     for(int i(0); i<3; ++i){
+//         lcm.reserve[i] = ros.reserve[i];
+//     }
+//     return lcm;
+// }
 
-unitree_legged_msgs::BmsState ToRos(UNITREE_LEGGED_SDK::BmsState& lcm){
-    unitree_legged_msgs::BmsState ros;
-    ros.version_h = lcm.version_h;
-    ros.version_l = lcm.version_l;
-    ros.bms_status = lcm.bms_status;
-    ros.SOC = lcm.SOC;
-    ros.current = lcm.current;
-    ros.cycle = lcm.cycle;
-    for(int i(0); i<2; ++i){
-        ros.BQ_NTC[i] = lcm.BQ_NTC[i];
-        ros.MCU_NTC[i] = lcm.MCU_NTC[i];
-    }
-    for(int i(0); i<10; ++i){
-        ros.cell_vol[i] = lcm.cell_vol[i];
-    }
-    return ros;
-}
+// unitree_legged_msgs::BmsState ToRos(UNITREE_LEGGED_SDK::BmsState& lcm){
+//     unitree_legged_msgs::BmsState ros;
+//     ros.version_h = lcm.version_h;
+//     ros.version_l = lcm.version_l;
+//     ros.bms_status = lcm.bms_status;
+//     ros.SOC = lcm.SOC;
+//     ros.current = lcm.current;
+//     ros.cycle = lcm.cycle;
+//     for(int i(0); i<2; ++i){
+//         ros.BQ_NTC[i] = lcm.BQ_NTC[i];
+//         ros.MCU_NTC[i] = lcm.MCU_NTC[i];
+//     }
+//     for(int i(0); i<10; ++i){
+//         ros.cell_vol[i] = lcm.cell_vol[i];
+//     }
+//     return ros;
+// }
 
 unitree_legged_msgs::IMU ToRos(UNITREE_LEGGED_SDK::IMU& lcm)
 {
@@ -113,7 +113,7 @@ unitree_legged_msgs::LowState ToRos(UNITREE_LEGGED_SDK::LowState& lcm)
     for(int i = 0; i<20; i++){
         ros.motorState[i] = ToRos(lcm.motorState[i]);
     }
-    ros.bms = ToRos(lcm.bms);
+    // ros.bms = ToRos(lcm.bms);
     for(int i = 0; i<4; i++){
         ros.footForce[i] = lcm.footForce[i];
         ros.footForceEst[i] = lcm.footForceEst[i];
@@ -138,7 +138,7 @@ UNITREE_LEGGED_SDK::LowCmd ToLcm(unitree_legged_msgs::LowCmd& ros, UNITREE_LEGGE
     for(int i = 0; i<20; i++){
         lcm.motorCmd[i] = ToLcm(ros.motorCmd[i], lcm.motorCmd[i]);
     }
-    lcm.bms = ToLcm(ros.bms);
+    // lcm.bms = ToLcm(ros.bms);
     for(int i = 0; i<40; i++){
         lcm.wirelessRemote[i] = ros.wirelessRemote[i];
     }
@@ -162,7 +162,7 @@ unitree_legged_msgs::HighState ToRos(UNITREE_LEGGED_SDK::HighState& lcm)
     ros.footRaiseHeight = lcm.footRaiseHeight;
     ros.bodyHeight = lcm.bodyHeight;
     ros.yawSpeed = lcm.yawSpeed;
-    ros.bms = ToRos(lcm.bms);
+    // ros.bms = ToRos(lcm.bms);
     ros.reserve = lcm.reserve;
     ros.crc = lcm.crc;
 
@@ -178,9 +178,9 @@ unitree_legged_msgs::HighState ToRos(UNITREE_LEGGED_SDK::HighState& lcm)
         ros.footForceEst[i] = lcm.footForceEst[i];
     }
 
-    for(int i(0); i<20; ++i){
-        ros.temperature[i] = lcm.temperature[i];
-    }
+    // for(int i(0); i<20; ++i){
+    //     ros.temperature[i] = lcm.temperature[i];
+    // }
 
     for(int i(0); i<40; ++i){
         ros.wirelessRemote[i] = lcm.wirelessRemote[i];
@@ -203,7 +203,7 @@ UNITREE_LEGGED_SDK::HighCmd ToLcm(unitree_legged_msgs::HighCmd& ros, UNITREE_LEG
     lcm.footRaiseHeight = ros.footRaiseHeight;
     lcm.bodyHeight = ros.bodyHeight;
     lcm.yawSpeed = ros.yawSpeed;
-    lcm.bms = ToLcm(ros.bms);
+    // lcm.bms = ToLcm(ros.bms);
     lcm.reserve = ros.reserve;
     lcm.crc = ros.crc;
 
